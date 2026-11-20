@@ -1,0 +1,10 @@
+{
+    "C_Cpp.default.compilerPath": "/home/chien/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-g++",
+
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/Project/01_Single-Person_Face_Verification/build/compile_commands.json",
+
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-arm",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.cStandard": "c11",
+    "cmake.sourceDirectory": "/home/chien/Luckfox_EdgeAI_Workspace/Project/01_Single-Person_Face_Verification"
+}

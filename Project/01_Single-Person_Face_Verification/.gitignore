@@ -1,0 +1,14 @@
+# Collected face images and enrollment data
+/Dataset/Person_A/
+/Enrollment/**/*
+!/Enrollment/**/
+!/Enrollment/**/README.md
+!/Enrollment/**/.gitkeep
+/Embeddings/*.bin
+
+# Generated RKNN calibration images and metadata
+/Calibration/yunet/*.png
+/Calibration/sface/*.png
+/Calibration/yunet.txt
+/Calibration/sface.txt
+ 

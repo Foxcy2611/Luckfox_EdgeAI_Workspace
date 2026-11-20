@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "FaceVerification",
+      "displayName": "FaceVerification - LuckFox RV1106",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "toolchainFile": "${sourceDir}/CMake/toolchain-rv1106.cmake",
+      "environment": {
+        "LUCKFOX_SDK_PATH": "$penv{HOME}/luckfox-pico"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "FaceVerification",
+      "configurePreset": "FaceVerification",
+      "targets": [
+        "FaceVerification"
+      ],
+      "jobs": 4
+    }
+  ]
+}

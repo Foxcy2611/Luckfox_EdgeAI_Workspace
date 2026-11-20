@@ -1,0 +1,56 @@
+# Ubuntu / editor
+.DS_Store
+*~
+.vscode/.ropeproject
+.idea/
+
+# Python environment / cache
+**/.venv/
+**/.venv-*/
+**/venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# C / C++ and SDK build artifacts
+**/build/
+**/cmake-build-*/
+**/CMakeFiles/
+**/CMakeCache.txt
+CMakeUserPresets.json
+**/compile_commands.json
+**/output/
+**/out/
+*.o
+*.a
+*.so
+*.elf
+*.map
+
+# Raw datasets / recordings (keep project manifests and notes in Git)
+**/Dataset/Raw/
+**/Dataset/Extracted/
+**/Dataset/Processed/
+**/Datasets/Raw/
+**/recordings/
+
+# Large models / binary weights (consider Git LFS if needed)
+*.onnx
+*.rknn
+*.pt
+*.pth
+*.ckpt
+*.tflite
+
+# Secrets / local machine config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+**/secrets/
+
+# SDK cloned or generated locally - keep separate from this workspace
+/luckfox-pico/
+/SDK_Upstream/
+/Tools/rknn-toolkit2-v1.6.0/
