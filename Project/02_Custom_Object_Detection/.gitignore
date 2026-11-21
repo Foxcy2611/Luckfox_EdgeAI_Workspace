@@ -1,0 +1,24 @@
+# Build / cache
+build/
+__pycache__/
+*.py[cod]
+
+# Local training output & datasets (may be large / personal)
+Training/runs/
+Dataset/raw/**
+Dataset/images/**
+Dataset/labels/**
+!Dataset/raw/.gitkeep
+!Dataset/images/train/.gitkeep
+!Dataset/images/val/.gitkeep
+!Dataset/images/test/.gitkeep
+!Dataset/labels/train/.gitkeep
+!Dataset/labels/val/.gitkeep
+!Dataset/labels/test/.gitkeep
+
+# Generated model binaries, logs and demo results
+Models/*.pt
+Models/*.onnx
+Models/*.rknn
+Results/*
+!Results/.gitkeep

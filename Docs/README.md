@@ -10,7 +10,12 @@ Tổng hợp **hướng dẫn thiết lập, ghi chú thực nghiệm và quy tr
 | [🏗️ Build Image](Build_Image.md) | Kiểm tra board qua UART, build SDK, ghi thẻ SD, boot và SSH qua USB RNDIS. |
 | [🧠 Dev → Release (RKNN)](Dev_to_Release_LuckFox_RKNN.md) | Train/export model, cross-compile C++, SCP để thử nghiệm và đóng gói firmware tự khởi chạy. |
 | [📷 Camera Usage](Camera_Usage.md) | Kết nối camera, kiểm tra pipeline, thu frame, xử lý ảnh và chuẩn bị đầu vào cho AI. |
-| [🧩 C++ Libraries & Cross-Compile](Cpp_Libraries_and_Cross_Compile.md) | `#include` / compile / link; dùng OpenCV-Mobile đã c-p hoặc tự c-p OpenCV từ source; RKNN và YOLO. |
+| [📷 Test Camera](Test_Camera.md) | Kiểm tra SC3336 trên LuckFox Pico Max và xác nhận luồng hình trước khi chạy ứng dụng. |
+| [🧩 C++ Libraries & Cross-Compile](Cpp_Libraries_and_Cross_Compile.md) | `#include` / compile / link, dùng OpenCV-Mobile đã c-p hoặc tự c-p OpenCV từ source, RKNN và YOLO. |
+| [CMake + Ninja](CMake_RV1106_Quickstart.md) | Cấu hình toolchain và cross-compile ứng dụng C++ cho RV1106. |
+| [RKNN-Toolkit2](Down_RKNN_Toolkit2.md) | Cài Toolkit v1.6.0 trong môi trường Python riêng trên Ubuntu. |
+| [Thư viện AI & Model](Lib_Train_Model.md) | Tổng quan thư viện AI và quy trình huấn luyện, xuất mô hình. |
+| [🗺️ Roadmap 5 Project](./EdgeAI_5_Project_Roadmap.md) | Tổng quan 5 dự án sẽ xuất hiện trong tương lai |
 
 ## 🚀 Quy trình làm việc
 
@@ -30,11 +35,13 @@ Ubuntu Setup → Build Image → Boot & SSH
 
 ## 📌 Quy ước
 
-- `docs/` chỉ giữ **quy trình dùng chung**; code và hướng dẫn riêng để trong `projects/<ten_project>/`.
+- `Docs/` chứa tài liệu dùng chung. Mã nguồn và hướng dẫn riêng nằm trong từng thư mục dưới [Project/](../Project/README.md).
 - Phân biệt **bước đã thử nghiệm** với **bước dự kiến**. Những lệnh phụ thuộc board, SDK, hệ điều hành hoặc firmware cần kiểm tra lại trước khi dùng.
-- Trong giai đoạn phát triển, ưu tiên **cross-compile + SCP**; chỉ đóng gói/build lại image khi cần thay đổi firmware hoặc chuẩn bị bản phát hành.
+- Trong giai đoạn phát triển, ưu tiên **cross-compile + SCP**, chỉ đóng gói/build lại image khi cần thay đổi firmware hoặc chuẩn bị bản phát hành.
 - Trước khi ghi thẻ SD, luôn xác nhận đúng thiết bị đích để tránh ghi nhầm ổ đĩa.
 
 ## 🔗 Tham khảo
+
+[Tài liệu Project 01](../Project/01_Single-Person_Face_Verification/Docs/README.md) · [Công cụ RKNN](../Tools/README.md)
 
 [LuckFox Wiki](https://wiki.luckfox.com/) · [LuckFox Pico SDK](https://github.com/LuckfoxTECH/luckfox-pico) · [RKNN Toolkit2](https://github.com/airockchip/rknn-toolkit2)

@@ -1,0 +1,10 @@
+path: /home/chien/Luckfox_EdgeAI_Workspace/Project/02_Custom_Object_Detection/Dataset
+train: images/train
+val: images/val
+test: images/test
+nc: 4
+names:
+  0: mouse
+  1: cell_phone
+  2: bowl
+  3: spoon

@@ -1,4 +1,15 @@
+<div align="center">
+
 # Project 01 - Single-Person Face Verification
+
+![LuckFox Pico Max](https://img.shields.io/badge/Board-LuckFox_Pico_Max-1766A0?style=flat-square)
+![SC3336](https://img.shields.io/badge/Camera-SC3336-0C8F8F?style=flat-square)
+![RKNN INT8](https://img.shields.io/badge/Inference-RKNN_INT8-9B59B6?style=flat-square)
+![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?style=flat-square&logo=cplusplus&logoColor=white)
+![Python](https://img.shields.io/badge/Tools-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+
+</div>
+
 
 > **Xác minh khuôn mặt một người trên thiết bị nhúng, chạy trực tiếp bằng NPU của LuckFox Pico Max (RV1106) và camera CSI SC3336.**
 
@@ -26,7 +37,7 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 | **YuNet** | Phát hiện khuôn mặt, xuất bounding box và **5 landmarks** |
 | **SFace** | Trích xuất **embedding 128 chiều** từ khuôn mặt đã căn chỉnh |
 | **Cosine similarity** | So sánh embedding đang quan sát với `person_a.bin`, xuất `VERIFIED` / `UNKNOWN` |
-| **SC3336 + RK_MPI** | Thu ảnh trực tiếp trên LuckFox, không cần gửi video về PC để chạy AI |
+| **SC3336 + RK_MPI** | Camera MIPI CSI 3 MP (2304×1296). Ứng dụng yêu cầu khung hình NV12 640×480 theo mặc định. [Thông số SC3336 trên Pico Pro/Max](https://wiki.luckfox.com/Luckfox-Pico-Pro-Max/CSI-Camera/) |
 | **TCP preview + Python viewer** | Truyền ảnh/metadata và hiển thị bbox, landmarks, độ tương đồng trên Ubuntu |
 
 **Không cần** train CNN riêng, classifier nhị phân hay bộ ảnh LFW để vận hành pipeline hiện tại. `UNKNOWN` là kết quả **không đạt ngưỡng cosine**, không phải một lớp được huấn luyện.
@@ -35,25 +46,18 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 
 ```text
                 UBUNTU - PHÁT TRIỂN / CHUẨN BỊ
-  Enrollment/Person_A/*.jpg (thu sẵn từ SC3336)
+  Ảnh enrollment + model ONNX → person_a.bin
+  Ảnh calibration + model ONNX → RKNN-Toolkit2 → yunet.rknn + sface.rknn
+  Mã C++ → CMake + Ninja → FaceVerification
                      │
-             YuNet ONNX + SFace ONNX
-                     │
-             Embeddings/person_a.bin
-                     │
-           RKNN-Toolkit2: ONNX → INT8
-                     │
-       yunet.rknn + sface.rknn + person_a.bin
-                     │
-               CMake + Ninja
-                     │
-                  SCP / SSH
-                     │
+     SCP binary, model RKNN, embedding và run_camera.sh
                      ▼
               LUCKFOX PICO MAX
-  SC3336 → RK_MPI (NV12) → RGB → resize 640×640
+  SC3336 → RK_MPI (NV12 640×480 mặc định) → RGB
                      │
-                YuNet RKNN
+         Resize theo input YuNet (640×640 trong benchmark)
+                     │
+              YuNet RKNN (BGR)
                      │
           bbox + 5 landmarks + NMS
                      │
@@ -81,6 +85,8 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 
 ## 3. Cấu trúc project
 
+Sơ đồ gồm mã nguồn, tài liệu và các file cục bộ cần cho pipeline.
+
 ```text
 01_Single-Person_Face_Verification/
 ├── CMakeLists.txt                  # Target C++ và thư viện LuckFox SDK
@@ -88,8 +94,10 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 ├── CMake/
 │   └── toolchain-rv1106.cmake      # ARM cross-compiler
 ├── Enrollment/
-│   └── Person_A/                   # Ảnh đăng ký thu từ SC3336
+│   ├── Person_A/                   # README và ảnh đăng ký cục bộ
+│   └── Person_B/                   # Thư mục giữ chỗ
 ├── Models/
+│   ├── README.md
 │   ├── detectors/
 │   │   ├── yunet.onnx              # YuNet gốc
 │   │   └── yunet.rknn              # YuNet INT8 cho RV1106
@@ -99,7 +107,12 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 ├── Embeddings/
 │   ├── person_a.bin                # 128 float32 (512 byte)
 │   └── person_a.json               # Metadata enrollment / hash model
-├── Calibration/                    # Ảnh + danh sách calibration cho 2 model
+├── Calibration/
+│   ├── manifest.json               # Cấu hình calibration và hash model
+│   ├── yunet/                      # Khung hình calibration cho YuNet
+│   ├── sface/                      # Ảnh khuôn mặt đã căn chỉnh cho SFace
+│   ├── yunet.txt                   # Danh sách khung hình do script tạo
+│   └── sface.txt                   # Danh sách ảnh khuôn mặt do script tạo
 ├── Scripts/
 │   ├── main.py                     # CLI: enroll, quantize, ...
 │   ├── face_pipeline.py
@@ -126,6 +139,8 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 │   ├── run_camera.sh               # Chạy trên LuckFox (qua SSH)
 │   └── view_face_verification.py   # Viewer trên Ubuntu
 ├── Docs/
+│   ├── README.md
+│   ├── Collect_Data.md
 │   ├── Download_ONNX_Models.md
 │   └── CPP_Deploy_LuckFox.md
 ├── build/                          # Kết quả biên dịch (tự sinh)
@@ -133,7 +148,7 @@ Project triển khai bài toán **Single-Person Face Verification**: kiểm tra 
 └── README.md                       # Tài liệu tổng quan (file này)
 ```
 
-**Quy tắc:** `Models/*.onnx`, dữ liệu enrollment và script Python dùng trên Ubuntu, sang LuckFox chỉ cần **binary C++, hai `.rknn`, `person_a.bin`, `run_camera.sh`**. Không đưa cả workspace lên board.
+`build/`, model ONNX/RKNN, ảnh enrollment và calibration, danh sách ảnh calibration và `person_a.bin` được giữ cục bộ. Khi triển khai lên LuckFox, chép **binary C++, hai file `.rknn`, `person_a.bin` và `run_camera.sh`**.
 
 ## 4. Model và dữ liệu
 
@@ -253,7 +268,7 @@ Xem chi tiết từng terminal và xử lý `rkipc` tại [Docs/CPP_Deploy_LuckF
 
 ### 7.1. Kết quả đo trên LuckFox Pico Max
 
-Số liệu **chế độ detect-only, không bật preview**, với camera 640×480 và YuNet 640×640:
+Số liệu dưới đây được đo ở chế độ **detect-only**, tắt preview. RK_MPI cấp khung hình **NV12 640×480**, sau đó ứng dụng chuyển sang RGB và resize thành **640×640** cho YuNet.
 
 | Chỉ số | Trước tối ưu resize | Sau tối ưu resize |
 |---|---:|---:|
@@ -274,8 +289,12 @@ Bản tối ưu tập trung vào phép **resize ảnh trên CPU**. Inference YuN
 
 ## 8. Tài liệu chi tiết
 
+[Mục lục tài liệu Project 01](Docs/README.md)
+
 | Tài liệu | Nội dung |
 |---|---|
+| [Models/README.md](Models/README.md) | Vai trò, định dạng và vị trí lưu YuNet/SFace |
+| [Docs/Collect_Data.md](Docs/Collect_Data.md) | Thu thập ảnh từ camera SC3336 |
 | [Scripts/README.md](Scripts/README.md) | Python enrollment, calibration, lượng tử hai model RKNN |
 | [Src/README.md](Src/README.md) | Kiến trúc C++, chức năng từng module và xử lý realtime |
 | [Docs/Download_ONNX_Models.md](Docs/Download_ONNX_Models.md) | Tải YuNet/SFace ONNX đúng tên và đúng vị trí |

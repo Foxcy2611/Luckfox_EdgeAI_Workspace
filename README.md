@@ -33,29 +33,40 @@ Workspace phát triển **Camera, Embedded Linux và Edge AI** trên **LuckFox /
 
 ## 📂 Cấu trúc workspace
 
-Cấu trúc tối giản dự kiến (các thư mục project chỉ tạo khi bắt đầu thực hiện):
-
 ```text
 Luckfox_EdgeAI_Workspace/
 ├── README.md
-├── docs/
+├── Docs/
+│   ├── README.md             # Mục lục tài liệu chung
 │   ├── Ubuntu_Setup.md       # Thiết lập môi trường Ubuntu
-│   └── Build_Image.md        # Build, nạp image và kết nối LuckFox
-├── projects/                 # Mỗi project có README và code riêng
-├── tools/                    # Script dùng chung, chỉ tạo khi cần
+│   ├── Build_Image.md        # Build, nạp image và kết nối LuckFox
+│   └── Camera_Usage.md       # Kết nối và kiểm tra SC3336
+├── Project/
+│   ├── README.md             # Danh sách project
+│   ├── 01_Single-Person_Face_Verification/
+│   └── 02/                   # Thư mục giữ chỗ
+├── Tools/
+│   └── README.md             # RKNN-Toolkit2 và môi trường Python cục bộ
 ├── .gitignore
 └── LICENSE
 ```
 
 ## ⚡ Bắt đầu
 
-1. [**Thiết lập Ubuntu**](docs/Ubuntu_Setup.md) — cài công cụ và chuẩn bị môi trường phát triển.
-2. [**Build & nạp image LuckFox**](docs/Build_Image.md) — kiểm tra board, build firmware, ghi thẻ và kết nối SSH.
-3. Bắt đầu project mới trong `projects/`, ghi cách build/chạy/kiểm thử tại `README.md` riêng.
+1. [**Thiết lập Ubuntu**](Docs/Ubuntu_Setup.md) — cài công cụ và chuẩn bị môi trường phát triển.
+2. [**Build & nạp image LuckFox**](Docs/Build_Image.md) — kiểm tra board, build firmware, ghi thẻ và kết nối SSH.
+3. [**Kiểm tra camera SC3336**](Docs/Camera_Usage.md) — kết nối và kiểm tra luồng hình trên board.
+4. [**Chạy Project 01**](Project/01_Single-Person_Face_Verification/README.md#6-chạy-nhanh) — chuẩn bị model, build và triển khai ứng dụng.
 
 > **Lưu ý:** LuckFox SDK được quản lý **ngoài repository**. Cấu hình camera, SDK, RKNN và firmware phụ thuộc model board/SoC thực tế. **CMake + Ninja** dùng cho ứng dụng tự viết; image hệ thống được build theo SDK.
 
 ## 👨‍💻 Tác giả & giấy phép
 
-**Nguyen Ngoc Chien** · Ubuntu / LuckFox / Embedded Linux  
-**License:** [MIT](LICENSE) — các thành phần bên thứ ba tuân theo giấy phép riêng.
+| Thông tin | Chi tiết |
+| :--- | :--- |
+| **Tác giả** | Nguyễn Ngọc Chiến |
+| **Mã sinh viên** | `B23DCVT061` |
+| **Trường** | Học viện Công nghệ Bưu chính Viễn thông (PTIT) |
+| **Chuyên môn** | Edge AI · Embedded Linux · LuckFox Pico |
+| **GitHub** | [github.com/Foxcy2611](https://github.com/Foxcy2611) |
+| **Giấy phép** | [MIT License](LICENSE) *(SDK & model bên thứ ba áp dụng giấy phép riêng)* |
